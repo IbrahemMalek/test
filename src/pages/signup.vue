@@ -106,9 +106,13 @@ export default {
   methods: {
     //here the function to toggle visibility of showing password
     googleSignup(){
-      fetch('https://backend-scratchup.onrender.com/auth/google/callback',{
-        method:"GET"
-      });
+      window.open(
+      "https://backend-scratchup.onrender.com/auth/google/callback",
+      "_self"
+    );
+      // fetch('https://backend-scratchup.onrender.com/auth/google/callback',{
+      //   method:"GET"
+      // });
 
     },
 
