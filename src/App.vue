@@ -1,26 +1,48 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <thenavigation />
+  <TheLoader v-if="showLoading"/>
+  <div class="container preline-ui">
+      <div class="row">
+          <div class="col-md-12">
+              <div>
+                  <router-view></router-view>
+              </div>
+          </div>
+      </div>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import thenavigation from './components/thenavigation.vue';
+import { mapState } from 'vuex';
+import { AUTO_LOGIN_ACTION } from './store/storeconstants';
+import { defineAsyncComponent } from 'vue';
 
+const TheLoader = defineAsyncComponent(() =>
+  import( './components/TheLoader.vue'),
+);
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
-}
-</script>
+  computed: {
+      ...mapState({
+          showLoading: (state) => state.showLoading,
+          autoLogout: (state) => state.auth.autoLogout,
+      }),
+  },
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+  watch: {
+      autoLogout(curValue, oldValue) {
+          if (curValue && curValue != oldValue) {
+              this.$router.replace('/login');
+          }
+      },
+  },
+  components: {
+      thenavigation,
+      TheLoader
+  },
+  created() {
+      this.$store.dispatch(`auth/${AUTO_LOGIN_ACTION}`);
+  },
+};
+</script>
