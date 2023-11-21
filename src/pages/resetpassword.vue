@@ -75,16 +75,22 @@ export default {
   },
   methods: {
     async resetpassword(){
+      try{
      if( this.newpassword===this.confirmpassword){
       const {data}=await axios.post(`https://backend-scratchup.onrender.com/auth/reset-password/${this.$route.params.userId}/${this.$route.params.token}`,{
           password:this.newpassword
       });
        this.msg=data.message;
-       this.$router.push('/posts');
+       this.$router.push('/login');
     }
     else{
       this.msg ="password must be same";
-    }
+    }}
+    catch (error) {
+    // Handle the error here
+    console.error('An error occurred during the password reset:', error);
+    this.msg = 'An error occurred during the password reset. Please try again.';
+  }
     }
   },
 };

@@ -54,12 +54,25 @@ export default {
           },
   methods:{
    async sendlink(){
-       
+     try{  
     const {data}=await axios.post('https://backend-scratchup.onrender.com/auth/forgot-password',{
         email:this.email
       });
-      this.msg=data.message
+     
+     // Assuming the server returns an error message when the email doesn't exist
+    if (data.error) {
+      // Handle the case where the email doesn't exist
+      this.msg = data.error;
+    } else {
+      // Handle the case where the email was successfully processed
+      this.msg = data.message;
       console.log(data);
+    }}
+    catch (error) {
+    // Handle the error here
+    console.error('An error occurred during the forgot password request:', error);
+    this.msg = 'An error occurred during the forgot password request. Please try again.';
+  }
 
 
     }
