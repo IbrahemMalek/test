@@ -9,7 +9,7 @@ const routes=[
         { path: '/login', component: login, meta: { auth: false } },
         { path: '/signup', component: signup, meta: { auth: false } },
         { path: '/forgetpassword', component: forgetpassword, meta: { auth: false } },
-        { path: '/reset-password/:userId/:verificationToken', component: resetpassword, meta: { auth: false } },
+        { path: '/reset-password/:userId/:token', component: resetpassword, meta: { auth: false } },
     ]
 const router=createRouter({
     history:createWebHistory(),

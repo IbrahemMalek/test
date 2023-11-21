@@ -11,24 +11,28 @@
                 Sign in here
               </a>
             </p>
+            <p v-if="msg" class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+              {{ msg }}
+              
+            </p>
           </div>
 
           <div class="mt-5">
             <!-- Form -->
-            <form>
+            <form @submit.prevent="sendlink()">
               <div class="grid gap-y-4 ">
                 <!-- Form Group -->
                 <div>
-                  <label for="email" class="block text-sm mb-2 dark:text-white text-center">Email address</label>
+                  <label for="email" class="block text-sm mb-2 dark:text-white text-center" >Email address</label>
                   <div class="relative">
-                    <input type="email" id="email" name="email" class="width:300px">
+                    <input type="email" id="email" name="email" class="width:300px" v-model.trim="email">
                     
                   </div>
                 
                 </div>
                 <!-- End Form Group -->
 
-                <button type="submit" class="btn btn-primary">Send link</button>
+                <button  type="submit" class="btn btn-primary">Send link</button>
               </div>
             </form>
             <!-- End Form -->
@@ -38,5 +42,27 @@
    
 </template>
 <script>
-export default {};
+import axios from 'axios';
+
+export default {
+  data(){
+    return {
+            email: '',
+            msg:''
+          }
+          
+          },
+  methods:{
+   async sendlink(){
+       
+    const {data}=await axios.post('https://backend-scratchup.onrender.com/auth/forgot-password',{
+        email:this.email
+      });
+      this.msg=data.message
+      console.log(data);
+
+
+    }
+  }
+};
 </script>
